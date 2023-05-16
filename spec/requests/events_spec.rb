@@ -51,7 +51,7 @@ require 'rails_helper'
 
       describe 'PATCH /update' do
         it 'updates an event' do
-          event = user.apartments.create(
+          event = user.events.create(
             artist: 'Lady Nada',
 	          description: "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the shows narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change.",
 	          genre: 'Pop',
