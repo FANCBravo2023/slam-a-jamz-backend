@@ -29,3 +29,5 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+DEVISE_JWT_SECRET_KEY=5a9b4744ac25dd6bc058b956449926fe5c939af1989d422fc804b71374e55629caa799eb953c7f8e956b0cac488456499733d9f39a1d54d6f1bb78a304962ac4
