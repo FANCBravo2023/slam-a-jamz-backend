@@ -2,39 +2,88 @@ require 'rails_helper'
 
 RSpec.describe 'Events', type: :request do
   let(:user) { User.create(email: 'testing1@example.com', password: 'password', password_confirmation: 'password') }
-  it "should have a valid artist" do
+  it "should have a valid date" do
     event = user.events.create(
-      description: "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the shows narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change.",
-      genre: "Pop",
-      image: "https://live.staticflickr.com/7165/6587554335_f28b0a1951_c.jpg" 
+      time: "9pm",
+      venue: "Pages Arena",
+      street: "123 Croissant St",
+      city: "Bakeresfield",
+      state: "CA",
+      price: 94
     )
-    expect(event.errors[:artist]).to include "can't be blank"
+    expect(event.errors[:date]).to include "can't be blank"
   end
 
-  it "should have a valid description" do
+  it "should have a valid time" do
     event = user.events.create(
-      artist: "Lady Nada",
-      genre: "Pop",
-      image: "https://live.staticflickr.com/7165/6587554335_f28b0a1951_c.jpg" 
+      date: "May 28, 2023",
+      venue: "Pages Arena",
+      street: "123 Croissant St",
+      city: "Bakeresfield",
+      state: "CA",
+      price: 94
     )
-    expect(event.errors[:description]).to include "can't be blank"
+    expect(event.errors[:time]).to include "can't be blank"
   end
 
-  it "should have a valid genre" do
+  it "should have a valid venue" do
     event = user.events.create(
-      artist: "Lady Nada",
-      description: "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the shows narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change.",
-      image: "https://live.staticflickr.com/7165/6587554335_f28b0a1951_c.jpg" 
+      date: "May 28, 2023",
+      time: "9pm",
+      street: "123 Croissant St",
+      city: "Bakeresfield",
+      state: "CA",
+      price: 94
     )
-    expect(event.errors[:genre]).to include "can't be blank"
+    expect(event.errors[:venue]).to include "can't be blank"
   end
 
-  it "should have an image" do
+  it "should have a valid street" do
     event = user.events.create(
-      artist: "Lady Nada"
-      description: "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the shows narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change.",
-      genre: "Pop",
+      date: "May 28, 2023",
+      time: "9pm",
+      venue: "Pages Arena",
+      city: "Bakeresfield",
+      state: "CA",
+      price: 94
     )
-    expect(event.errors[:image]).to include "can't be blank"
+    expect(event.errors[:street]).to include "can't be blank"
   end
+
+  it "should have a valid city" do
+    event = user.events.create(
+      date: "May 28, 2023",
+      time: "9pm",
+      venue: "Pages Arena",
+      street: "123 Croissant St",
+      state: "CA",
+      price: 94
+    )
+    expect(event.errors[:city]).to include "can't be blank"
+  end
+
+  it "should have a valid state" do
+    event = user.events.create(
+      date: "May 28, 2023",
+      time: "9pm",
+      venue: "Pages Arena",
+      street: "123 Croissant St",
+      city: "Bakeresfield",
+      price: 94
+    )
+    expect(event.errors[:state]).to include "can't be blank"
+  end
+
+  it "should have a valid price" do
+    event = user.events.create(
+      date: "May 28, 2023",
+      time: "9pm",
+      venue: "Pages Arena",
+      street: "123 Croissant St",
+      city: "Bakeresfield",
+      state: "CA"
+    )
+    expect(event.errors[:price]).to include "can't be blank"
+  end
+
 end

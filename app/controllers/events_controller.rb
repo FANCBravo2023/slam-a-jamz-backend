@@ -6,7 +6,6 @@ class EventsController < ApplicationController
   end
   
   def create
-    # Create a new event
     event = Event.create(event_params)
     if event.valid?
       render json: event
@@ -34,9 +33,10 @@ class EventsController < ApplicationController
     end
   end
 
+  
    # Handle strong parameters, so we are secure
   private
   def event_params
-    params.require(:event).permit(:user_id, :date, :time, :venue, :street, :city, :state, :price)
+    params.require(:event).permit( :date, :time, :venue, :street, :city, :state, :price, :user_id)
   end
 end
