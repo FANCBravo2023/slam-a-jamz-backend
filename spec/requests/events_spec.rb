@@ -1,89 +1,113 @@
 require 'rails_helper'
 
   RSpec.describe 'Events', type: :request do
-	  let(:user) { User.create(email: 'testing1@example.com', password: 'password', password_confirmation: 'password') }
-
-      describe 'GET /index' do
+	  let(:user) { User.create(
+      email: 'testing1@example.com', password: 'password', password_confirmation: 'password'
+      )
+    }
+      describe "GET /index" do
         it 'gets a list of events' do
 	        event = user.events.create(
-          artist: 'Lady Nada',
-          description: "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the shows narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change.",
-	        genre: 'Pop',
-          image: 'https://live.staticflickr.com/7165/6587554335_f28b0a1951_c.jpg'
+          date: "May 28, 2023",
+          time: "9pm",
+          venue: "Pages Arena",
+          street: "123 Croissant St",
+          city: "Bakersfield",
+          state: "CA",
+          price: 94
           )
       # Make a request
-      get '/events'
+      get "/events"
 
       events = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(events.first['artist']).to eq('Lady Nada')
+      expect(events.length).to eq 1
     end
   end
 
-      describe 'POST /create' do
+      describe "POST /create" do
         it 'creates an event' do
           # The params we are going to send with the request
           event_params = {
-          event: {
-            user_id: user.id,
-            artist: 'Lady Nada',
-	          description: "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the show's narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change.",
-	          genre: 'Pop',
-            image: 'https://live.staticflickr.com/7165/6587554335_f28b0a1951_c.jpg'
+            event: {
+              date: "May 28, 2023",
+              time: "9pm",
+              venue: "Pages Arena",
+              street: "123 Croissant St",
+              city: "Bakersfield",
+              state: "CA",
+              price: 94,
+              user_id: user.id
+            }
           }
-        }
-      # Send the request to the server
-      post '/events', params: event_params
+        # Send the request to the server
+        post "/events", params: event_params
 
-      # Assure that we get a success back
-      expect(response).to have_http_status(200)
+        # Assure that we get a success back
+        expect(response).to have_http_status(200)
 
-      # Look up the event we expect to be created in the db
-      event = Event.first
+        # Look up the event we expect to be created in the db
+        event = Event.first
 
-      # Assure that the created cat has the correct attributes
-      expect(event.artist).to eq 'Lady Nada'
-      expect(event.description).to eq "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the show's narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change."
-      expect(event.genre).to eq 'Pop'
-      expect(event.image).to eq 'https://live.staticflickr.com/7165/6587554335_f28b0a1951_c.jpg'
+        # Assure that the created cat has the correct attributes
+        expect(event.date).to eq "May 28, 2023"
+        expect(event.time).to eq "9pm"
+        expect(event.venue).to eq "Pages Arena"
+        expect(event.street).to eq "123 Croissant St"
+        expect(event.city).to eq "Bakersfield"
+        expect(event.state).to eq "CA"
+        expect(event.price).to eq 94
+      end
     end
-  end
 
-      describe 'PATCH /update' do
-        it 'updates an event' do
+      describe "PATCH /update" do
+        it 'cannot update an event without all valid attributes' do
           event = user.events.create(
-            artist: 'Lady Nada',
-	          description: "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the shows narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change.",
-	          genre: 'Pop',
-            image: 'https://live.staticflickr.com/7165/6587554335_f28b0a1951_c.jpg'
+            date: "May 28, 2023",
+            time: "9pm",
+            venue: "Pages Arena",
+            street: "123 Croissant St",
+            city: "Bakersfield",
+            state: "CA",
+            price: 94
           )
-        update_params = {
-          event: {
-            artist: 'Lady Nada',
-	          description: "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted albums themes, the shows narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change.",
-	          genre: 'Pop',
-            image: 'https://cdn.pixabay.com/photo/2017/01/16/21/47/pig-1985380_960_720.jpg'
+          event_params = {
+            event: {
+              date: nil,
+              time: nil,
+              venue: nil,
+              street: nil,
+              city: nil,
+              state: nil,
+              price: nil,
+              user_id: user.id
+            }
           }
-        }
-      patch '/events/#{event.id}', params: update_params
-      expect(response).to have_http_status(200)
-      event = Event.first
-      expect(event.artist).to eq 'Lady Nada'
-      expect(event.description).to eq "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the shows narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change."
-      expect(event.genre).to eq 'Pop'
-      expect(event.image).to eq 'https://live.staticflickr.com/7165/6587554335_f28b0a1951_c.jpg'
+        patch "/events/#{event.id}", params: event_params
+        expect(response).to have_http_status(422)
+        event = JSON.parse(response.body)
+        expect(event["date"]).to include "can't be blank"
+        expect(event["time"]).to include "can't be blank"
+        expect(event["venue"]).to include "can't be blank"
+        expect(event["street"]).to include "can't be blank"
+        expect(event["city"]).to include "can't be blank"
+        expect(event["state"]).to include "can't be blank"
+        expect(event["price"]).to include "can't be blank"      
     end
   end
 
-    describe 'DELETE /destroy' do
-      it 'will delete an event' do
-        event = Event.create(
-          artist: 'Lady Nada',
-          description: "It is Nada's first all- stadium concert tour and features a stage inspired by brutalist architecture. In line with the promoted album's themes, the shows narrative depicts a journey around trauma and healing. It is divided into distinct segments, each separated by a video introduction and a costume change.",
-          genre: 'Pop',
-          Image: 'https://live.staticflickr.com/7165/6587554335_f28b0a1951_c.jpg'
+      describe "DELETE /destroy" do
+        it 'will delete an event' do
+          event = user.events.create(
+            date: "May 28, 2023",
+            time: "9pm",
+            venue: "Pages Arena",
+            street: "123 Croissant St",
+            city: "Bakersfield",
+            state: "CA",
+            price: 94,
         )
-      delete '/events/#{event.id}'
+      delete "/events/#{event.id}"
       expect(response).to have_http_status(200)
     end
   end
