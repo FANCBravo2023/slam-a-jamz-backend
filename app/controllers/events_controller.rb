@@ -37,6 +37,6 @@ class EventsController < ApplicationController
    # Handle strong parameters, so we are secure
   private
   def event_params
-    params.require(:event).permit( :date, :time, :venue, :street, :city, :state, :price, :user_id)
+    params.require(:event).permit( :artist, :description, :genre, :image, :date, :time, :venue, :street, :city, :state, :price, :user_id)
   end
 end
