@@ -10,7 +10,7 @@ class EventsController < ApplicationController
     if event.valid?
       render json: event
     else 
-      render json: event.errors, status:422
+      render json: event.errors, status: 422
     end
   end
   

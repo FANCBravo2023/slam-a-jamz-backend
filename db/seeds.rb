@@ -1,9 +1,18 @@
-user1 = User.where(email: "test1@example.com").first_or_create(password: "password", password_confirmation: "password")
-user2 = User.where(email: "test2@example.com").first_or_create(password: "password", password_confirmation: "password")
+# user1 = User.where(email: "test1@example.com").first_or_create(password: "password", password_confirmation: "password")
+# user2 = User.where(email: "test2@example.com").first_or_create(password: "password", password_confirmation: "password")
+
+
+user1 = User.where(email: "test1@example.com").first_or_create(
+  password: "password",
+  password_confirmation: "password",
+)
 
 events = [
   {
-    user_id: 1,
+    artist: "Your artist name",
+    description: "Your artist description",
+    genre: "Your genre",
+    image:"url",
     date: "May 21, 2023",
     time: "8pm",
     venue: "Pages Arena",
@@ -13,7 +22,10 @@ events = [
     price: 94,
   },
   {
-    user_id: 2,
+    artist: "Your artist name",
+    description: "Your artist description",
+    genre: "Your genre",
+    image:"url",
     date: "May 28, 2023",
     time: "11pm",
     venue: "Butcher Chop",
@@ -23,7 +35,10 @@ events = [
     price: 35,
   },
   {
-    user_id: 3,
+    artist: "Your artist name",
+    description: "Your artist description",
+    genre: "Your genre",
+    image:"url",
     date: "May 30, 2023",
     time: "10pm",
     venue: "Skyway",
@@ -35,7 +50,7 @@ events = [
 ]
 
 events.each do |event|
-  Event.create event
+  user1.events.create event
   puts "creating event #{event}"
 end
 
