@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'private/test'
   resources :events
   devise_for :users, 
     path: '', 

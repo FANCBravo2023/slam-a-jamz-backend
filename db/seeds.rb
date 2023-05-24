@@ -1,7 +1,3 @@
-# user1 = User.where(email: "test1@example.com").first_or_create(password: "password", password_confirmation: "password")
-# user2 = User.where(email: "test2@example.com").first_or_create(password: "password", password_confirmation: "password")
-
-
 user1 = User.where(email: "test1@example.com").first_or_create(
   password: "password",
   password_confirmation: "password",
@@ -19,7 +15,7 @@ events = [
     street: "123 Croissant St",
     city: "Bakersfield",
     state: "CA",
-    price: 94,
+    price: 94
   },
   {
     artist: "Your artist name",
@@ -32,7 +28,7 @@ events = [
     street: "456 Baggette St",
     city: "Bismo Bich",
     state: "CA",
-    price: 35,
+    price: 35
   },
   {
     artist: "Your artist name",
@@ -45,13 +41,13 @@ events = [
     street: "789 Wonder Bread Ln",
     city: "Maple Grove",
     state: "MN",
-    price: 100,
+    price: 100
   }
 ]
 
 events.each do |event|
-  user1.events.create event
-  puts "creating event #{event}"
+  user1.events.create (event)
+  puts "creating: #{event}"
 end
 
 
